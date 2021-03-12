@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Election Day! Vote for your Candidate!</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./web3.min.js"></script>
+    <script type="text/javascript" src="./abi.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Election Day!</h1>
+        <p class="lead">Vote for your Candidate!</p>
+      </div>
+    </div>
+    <div class="container">
+      <div>
+        <h2>The candidates are:</h2>
+        <div><span id="print"></span>
+          <div>
+            ID: <span id="id0_out"></span>
+          </div>
+          <div>
+            Name: <span id="name0_out"></span>
+          </div>
+          <div>
+            ID: <span id="id1_out"></span>
+          </div>
+          <div>
+            Name: <span id="name1_out"></span>
+          </div>
+          <div>
+            ID: <span id="id2_out"></span>
+          </div>
+          <div>
+            Name: <span id="name2_out"></span>
+          </div>
+          <div>
+            ID: <span id="id3_out"></span>
+          </div>
+          <div>
+            Name: <span id="name3_out"></span>
+          </div>
+        <h2>Cast your vote here</h2>
+        <div class="input-group mb-3">
+          <input type="number" id="id_in" placeholder="Input Candidate ID Here" >
+        </div>
+        <button type="button" id="castVote_button" class="btn btn-primary">Cast your vote!</button>
+      </div>
+      <div>
+        <h2>..and the winner is:</h2>
+        <div>
+          Name: <span id="winner_output"></span>
+        </div>
+      </div>
+      <div>
+        <h2>Vote Master approve Voters here:</h2>
+        <input type="bytes32" id="votersAddress" placeholder="Input address to be approved here">
+        <button type="button" id="approveAddressBtn" class="btn btn-primary">Approve this address</button>
+      </div>
+    </div>
+
+
+  </body>
+</html>
