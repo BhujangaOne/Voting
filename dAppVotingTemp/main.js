@@ -56,7 +56,7 @@ $("#print").text(candsNames + candsIds);
 }
 */
 
-
+//This is of course not the final solution, but I did hardcode it for now to have some representation of the candidates.
 async function getCands(){
   console.log("running");
     await voteApp.methods.candidates(0).call().then(function(res){
