@@ -25,31 +25,8 @@
     <div class="container">
       <div>
         <h2>The candidates are:</h2>
-        <div><span id="print"></span>
-          <div>
-            ID: <span id="id0_out"></span>
-          </div>
-          <div>
-            Name: <span id="name0_out"></span>
-          </div>
-          <div>
-            ID: <span id="id1_out"></span>
-          </div>
-          <div>
-            Name: <span id="name1_out"></span>
-          </div>
-          <div>
-            ID: <span id="id2_out"></span>
-          </div>
-          <div>
-            Name: <span id="name2_out"></span>
-          </div>
-          <div>
-            ID: <span id="id3_out"></span>
-          </div>
-          <div>
-            Name: <span id="name3_out"></span>
-          </div>
+        <div><span class="CandsOut" id="print"></span>
+
         <h2>Cast your vote here</h2>
         <div class="input-group mb-3">
           <input type="number" id="id_in" placeholder="Input Candidate ID Here" >
@@ -64,7 +41,7 @@
       </div>
       <div>
         <h2>Vote Master approve Voters here:</h2>
-        <input type="bytes32" id="votersAddress" placeholder="Input address to be approved here">
+        <input type="text" id="votersAddress" placeholder="Input address to be approved here">
         <button type="button" id="approveAddressBtn" class="btn btn-primary">Approve this address</button>
       </div>
     </div>
