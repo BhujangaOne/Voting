@@ -6,23 +6,22 @@ var length;
 
 
 $(document).ready(function() {
-    window.ethereum.enable().then(function(accounts){
-      voteApp = new web3.eth.Contract(window.abi, "0xd28454418DFB7eBc866C08C020186383840c0b7a", {from: accounts[0]});
-      getLength();
-    //  getCandidates();
-    getCands();
+      window.ethereum.enable().then(function(accounts){
+      voteApp = new web3.eth.Contract(window.abi, "0x3F0431B4D908339285A421FEEcEBbeA8601bB022", {from: accounts[0]});
+    getAllCands();
+    //getCands();
     });
     $("#castVote_button").click(castVote);
     $("#approveAddressBtn").click(aprAdress);
 
 });
 
-function castVote(){
+async function castVote(){
   var voteID = $("#id_in").val();
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
-  voteApp.methods.vote(voteID).send(config) //send will send data to function createPerson
+await voteApp.methods.vote(voteID).send(config) //send will send data to function createPerson
     .on("transactionHash", function(hash){ //event listener that listens for transactionHash
       console.log("tx hash");
     })
@@ -34,36 +33,37 @@ function castVote(){
     })
   }
 
-//Hi danielle, this is where I struggle. How could I make a loop that calls an async function again and again?
-//Here I want to get data from the Voters struct array candidates and push the data into a new array in javascript
-/*
-async function getCandidates() {
-const len = length;
-  for (let count = 0; count < len; count++) {
-    console.log(count);
-    await  voteApp.methods.candidates(count).call().then(function(res){
-        candsNames.push(res.name);
-        candsIds.push(count);
-        console.log(candsNames[1]);
-        console.log(candsIds[0]);
-        $("#id_out").text(res.votes);
-        $("#name_out").text(web3.utils.toAscii(res.name));
-        console.log(count);
+async function getAllCands() {
+  const candsLength = await voteApp.methods.candLength().call();
+  for (let i = 0; i < candsLength; i++){
+    candsNames.push(
+    await voteApp.methods.candidates(i).call().then(result => {
+        return [result[0]];
+      })
+    )
+    candsIds.push(i);
 
-    })
   }
-$("#print").text(candsNames + candsIds);
+  $("#name0_out").text(web3.utils.toUtf8(candsNames[1].toString()));
+  printCands();
+  console.log(candsNames);
+  console.log(candsIds);
 }
-*/
 
-//This is of course not the final solution, but I did hardcode it for now to have some representation of the candidates.
-async function getCands(){
+async function printCands(){
+  const candsLength = await voteApp.methods.candLength().call();
+  for (var i = 0; i < candsLength; i++){
+    $('<div class="candsOut" />').text("ID: " + candsIds[i] + ": " + web3.utils.toUtf8(candsNames[i].toString())).appendTo('.CandsOut');
+  }
+}
+/*
+async function getCands(candsNames){
   console.log("running");
     await voteApp.methods.candidates(0).call().then(function(res){
-    console.log(web3.utils.toAscii(res.name));
-    $("#id0_out").text(0);
-    $("#name0_out").text(web3.utils.toUtf8(res.name));
-  })
+      console.log(web3.utils.toAscii(res.name));
+      $("#id1_out").text(0);
+      $("#name1_out").text(web3.utils.toUtf8(res.name));
+    })
   await voteApp.methods.candidates(1).call().then(function(res){
     console.log(web3.utils.toAscii(res.name));
     $("#id1_out").text(1);
@@ -80,22 +80,13 @@ async function getCands(){
     $("#name3_out").text(web3.utils.toUtf8(res.name));
   })
 }
+*/
+async function aprAdress() {
+  var str = await web3.utils.toChecksumAddress($("#votersAddress").val());
 
-function aprAdress() {
-  var adr = $("#votersAddress").val();
+
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
-  voteApp.methods.approveVoter(adr).send(config);
-}
-
-function getLength(){
-  voteApp.methods.candLength().call().then(function(res){
-    length = res;
-    console.log(length);
-  })
-
-
-
-
+  await voteApp.methods.approveVoter(str).send(config);
 }
