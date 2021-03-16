@@ -3,7 +3,7 @@ var voteApp;
 var candsNames = [];
 var candsIds = [];
 var length;
-
+var voteID;
 
 $(document).ready(function() {
       window.ethereum.enable().then(function(accounts){
@@ -18,7 +18,8 @@ $(document).ready(function() {
 
 async function castVote(){
 
-    let voteID = parseInt($(document.getElementById.name).val());
+  console.log("The ID is:" + voteID);
+
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
@@ -56,12 +57,17 @@ async function printCands(){
   const candsLength = await voteApp.methods.candLength().call();
   for (var i = 0; i < candsLength; i++){
   //  $('<input type="radio" name="Candidate" id="vote"></input>').appendTo('.CandsOut');
-   $('<input type="button" id="Candidate" value="Vote For"></input>' ).click(castVote).appendTo('.CandsOut');
+   $('<input type="button" id="Candidate" value="Vote For" onclick="setID(this.id)"></input>' ).click(castVote).appendTo('.CandsOut');
     $('<div class="candsOut" id="CandsListing" />').text("ID: " + candsIds[i] + ": " + web3.utils.toUtf8(candsNames[i].toString())).appendTo('.CandsOut');
     document.getElementById("Candidate").value = "Vote for " + web3.utils.toUtf8(candsNames[i].toString());
     document.getElementById("Candidate").name = parseInt(candsIds[i]);
     document.getElementById("Candidate").id = i;
   }
+}
+
+function setID(id){
+  console.log(id);
+  voteID = BigInt(id);
 }
 /*
 async function getCands(candsNames){
