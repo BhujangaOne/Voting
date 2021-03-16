@@ -7,7 +7,7 @@ var voteID;
 
 $(document).ready(function() {
       window.ethereum.enable().then(function(accounts){
-      voteApp = new web3.eth.Contract(window.abi, "0x3F0431B4D908339285A421FEEcEBbeA8601bB022", {from: accounts[0]});
+      voteApp = new web3.eth.Contract(window.abi, "0x3f766e388e0A66540a6c27E7d31A947dFF06315E", {from: accounts[0]});
     getAllCands();
     //getCands();
     });
@@ -67,7 +67,10 @@ async function printCands(){
 
 function setID(id){
   console.log(id);
-  voteID = BigInt(id);
+  voteID = id;
+  //voteID = BigInt(parseInt(id));
+
+  console.log(voteID);
 }
 /*
 async function getCands(candsNames){
@@ -94,10 +97,20 @@ async function getCands(candsNames){
   })
 }
 */
-async function aprAdress() {
-  var str = (web3.utils.asciiToHex($("#votersAddress").val()));
+function aprAdress() {
+  var str = $("#votersAddress").val();
+  console.log(str);
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
-  await voteApp.methods.approveVoter(str).send(config);
-}
+  voteApp.methods.approveVoter(str).send(config)
+  .on("transactionHash", function(hash){ //event listener that listens for transactionHash
+    console.log("tx hash");
+  })
+  .on("confirmation", function(confirmationNumber, receipt){ //listener for confirmationNumber only works on real blockchain as local will not confirm for real
+      console.log("conf");
+  })
+  .on("receipt", function(receipt){
+    console.log(receipt);
+  })
+};
