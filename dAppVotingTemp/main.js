@@ -11,17 +11,19 @@ $(document).ready(function() {
     getAllCands();
     //getCands();
     });
-    $("#castVote_button").click(castVote);
+//    $("#castVote_button").click(castVote);
     $("#approveAddressBtn").click(aprAdress);
 
 });
 
 async function castVote(){
-  var voteID = $("#id_in").val();
+
+    let voteID = parseInt($(document.getElementById.name).val());
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
-await voteApp.methods.vote(voteID).send(config) //send will send data to function createPerson
+await voteApp.methods.vote(voteID)
+    .send(config) //send will send data to function createPerson
     .on("transactionHash", function(hash){ //event listener that listens for transactionHash
       console.log("tx hash");
     })
@@ -53,7 +55,12 @@ async function getAllCands() {
 async function printCands(){
   const candsLength = await voteApp.methods.candLength().call();
   for (var i = 0; i < candsLength; i++){
-    $('<div class="candsOut" />').text("ID: " + candsIds[i] + ": " + web3.utils.toUtf8(candsNames[i].toString())).appendTo('.CandsOut');
+  //  $('<input type="radio" name="Candidate" id="vote"></input>').appendTo('.CandsOut');
+   $('<input type="button" id="Candidate" value="Vote For"></input>' ).click(castVote).appendTo('.CandsOut');
+    $('<div class="candsOut" id="CandsListing" />').text("ID: " + candsIds[i] + ": " + web3.utils.toUtf8(candsNames[i].toString())).appendTo('.CandsOut');
+    document.getElementById("Candidate").value = "Vote for " + web3.utils.toUtf8(candsNames[i].toString());
+    document.getElementById("Candidate").name = parseInt(candsIds[i]);
+    document.getElementById("Candidate").id = i;
   }
 }
 /*
@@ -82,9 +89,7 @@ async function getCands(candsNames){
 }
 */
 async function aprAdress() {
-  var str = await web3.utils.toChecksumAddress($("#votersAddress").val());
-
-
+  var str = (web3.utils.asciiToHex($("#votersAddress").val()));
   var config = {
     value: web3.utils.toWei("1", "ether")
   }
