@@ -42,6 +42,18 @@ contract Voting{
     return nrOfCandidates_ = candidates.length;
   }
 
+
+
+  //New approve function with input bytes20 to get input from through javascript in main.js, so voteMaster can input address in html from in bytes20 format to approve
+  function approveVoter(address voter) public payable {
+    require(msg.sender == voteMaster, "Only voteMaster can approve Voters!");
+    require(!voters[voter].didVote, "Voter already voted!");
+    require(voters[voter].weight == 0);
+
+
+    voters[voter].weight = 1;
+  }
+/*
   //Voters validation function, only voteMaster(contrat owner) can execute
   function approveVoter(address voter) public {
     require(msg.sender == voteMaster, "Only voteMaster can access this function!");
@@ -50,8 +62,8 @@ contract Voting{
 
     voters[voter].weight = 1;
   }
-
-  function vote(uint candidate) public {
+*/
+  function vote(uint candidate) public payable {
     Voter storage sender = voters[msg.sender]; //creates Voter variable and sets it to voters[msg.sender]
     require(!sender.didVote, "You already did vote!");  //checks if msg.sender did already vote
     require(sender.weight > 0, "You are not approved as voter!");
@@ -60,9 +72,10 @@ contract Voting{
     sender.vote = candidate;
 
     candidates[candidate].votes += sender.weight;
+
   }
 
-  function delegateVote(address to) public {
+  function delegateVote(address to) public payable {
     Voter storage sender = voters[msg.sender]; //creates Voter variable sender for msg.sender to have cleaner code for require statement!
     require(!sender.didVote, "You cannot delegate your vote because you already voted!");
     require(to != msg.sender, "You cannot delegate your vote to yourself!");
